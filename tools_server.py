@@ -3,7 +3,7 @@ from mcp.server.fastmcp import FastMCP
 
 
 # initialize MCP server
-mcp = FastMCP("stock")
+mcp = FastMCP("stock", dependencies=["yfinance"])
 
 
 # tools
