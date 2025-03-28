@@ -7,3 +7,7 @@ mcp = FastMCP("custom prompts")
 @mcp.prompt()
 def translate_to_chinese(texts: str) -> str:
     return f"Please translate this texts to Chinese:\n\n{texts}"
+
+
+if __name__ == "__main__":
+    mcp.run(transport='studio')
