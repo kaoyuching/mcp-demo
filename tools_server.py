@@ -64,6 +64,7 @@ def get_stock_symbol(name: str):
     
 
 # prompt template
+@mcp.prompt()
 def ask_realtime_stock_price(company: str):
     """
     Ask realtime stock price.
