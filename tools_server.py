@@ -28,6 +28,12 @@ def get_tw_stock_symbols():
             symbol_mapping[symbol[1]] = symbol[0] + ".TW"
     return symbol_mapping
 
+
+def check_tw_market_status():
+    # TODO
+    ...
+
+
 symbol_mapping = get_tw_stock_symbols()
 
 
@@ -41,7 +47,7 @@ def get_realtime_stock_price(ticker_symbol: str):
         ticker_symbol: ticker symbol.
     """
     ticker = yf.Ticker(ticker_symbol)
-    tradeable = ticker.info.get("tradeable")
+    tradeable = ticker.info.get("tradeable")  # not work
     ticker_info = ticker.info
     if ticker_info.get("regularMarketPrice", None):
         realtime_price = ticker_info["regularMarketPrice"]
@@ -63,7 +69,8 @@ def get_stock_previous_close(ticker_symbol: str):
         ticker_symbol: ticker symbol.
     """
     ticker = yf.Ticker(ticker_symbol)
-    tradeable = ticker.info.get("tradeable")
+    #  tradeable = ticker.info.get("tradeable")  # not work
+    tradeable = True  # TODO: get market status
     ticker_info = ticker.info
     if not tradeable:
         if ticker_info.get("regularMarketPrice", None):
