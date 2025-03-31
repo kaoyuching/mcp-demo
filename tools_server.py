@@ -10,6 +10,9 @@ mcp = FastMCP("stock", dependencies=["yfinance"])
 
 # unit functions
 def get_tw_stock_symbols():
+    """
+    Stock name and symbol mapping.
+    """
     urls = ["https://isin.twse.com.tw/isin/C_public.jsp?strMode=2",  # listed
         "https://isin.twse.com.tw/isin/C_public.jsp?strMode=3",  # bond
         "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4"  # otc
@@ -38,8 +41,17 @@ def get_realtime_stock_price(ticker_symbol: str):
         ticker_symbol: ticker symbol.
     """
     ticker = yf.Ticker(ticker_symbol)
-    realtime_price = ticker.info['regularMarketPrice']
-    return realtime_price
+    tradeable = ticker.info.get("tradeable")
+    ticker_info = ticker.info
+    if ticker_info.get("regularMarketPrice", None):
+        realtime_price = ticker_info["regularMarketPrice"]
+    elif ticker_info.get("currentPrice", None):
+        realtime_price = ticker_info["currentPrice"]
+    elif ticker.fast_info.get("lastPrice", None):
+        realtime_price = ticker.fast_info["lastPrice"]
+    else:
+        realtime_price = None
+    return {"tradeable": tradeable, "realtime_price": realtime_price}
 
 
 @mcp.tool()
@@ -51,7 +63,17 @@ def get_stock_previous_close(ticker_symbol: str):
         ticker_symbol: ticker symbol.
     """
     ticker = yf.Ticker(ticker_symbol)
-    previous_close = ticker.info['regularMarketPreviousClose']
+    tradeable = ticker.info.get("tradeable")
+    ticker_info = ticker.info
+    if not tradeable:
+        if ticker_info.get("regularMarketPrice", None):
+            previous_close  = ticker_info["regularMarketPrice"]
+        elif ticker_info.get("currentPrice", None):
+            previous_close = ticker_info["currentPrice"]
+        elif ticker.fast_info.get("lastPrice", None):
+            previous_close = ticker.fast_info["lastPrice"]
+    else:
+        previous_close = ticker_info['regularMarketPreviousClose']
     return previous_close
 
 
