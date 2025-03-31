@@ -41,4 +41,4 @@ Check the prompt server:
 
 
 #### Step3: Use in chat sessions
-![Claude-mcp-demo](./imgs/Claude_mcp_demo.mp4)
+![Claude-mcp-demo](./imgs/Claude_mcp_demo.gif)
